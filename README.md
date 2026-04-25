@@ -139,10 +139,7 @@ python src/models.py
 
 ## 👨‍💻 Author
 
-Your Name
+LILIA MOKHTARI
 
 ---
 
-## 📜 License
-
-MIT License
