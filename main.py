@@ -1,15 +1,14 @@
 from src.dataset import build_dataset
 from src.models import train_models
 from src.utils import ensure_dirs
-# Make sure folders exist
+
+
 ensure_dirs()
 
-# Your merged file
-file_path = "data/data_record.csv"   # <-- change name if needed
+file_path = "data/data_record.csv"
 
 print(f"Loading data from: {file_path}")
 
-# Build dataset (this already handles windowing + gaps)
 X = build_dataset(file_path)
 
 if len(X) == 0:
@@ -17,7 +16,6 @@ if len(X) == 0:
 
 print(f"Dataset shape: {X.shape}")
 
-# Train models
-svm, iso = train_models(X)
+train_models(X)
 
-print("✅ Training complete!")
+print("Training complete.")

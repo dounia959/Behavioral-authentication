@@ -1,145 +1,89 @@
 # Continuous User Authentication using Behavioral Biometrics
 
-## 📌 Overview
+## Overview
 
-This project implements a continuous authentication system that verifies whether the current user of a computer is the legitimate owner based on behavioral patterns such as keystroke dynamics and mouse movements.
+This project implements a continuous authentication prototype that checks whether the current computer user looks like the legitimate owner based on behavioral patterns such as keystroke timing and mouse movement.
 
-The system uses anomaly detection models (One-Class SVM and Isolation Forest) trained on user interaction data.
+The system trains anomaly detection models on normal user activity and flags later sessions that do not match the learned pattern.
 
----
+## Pipeline
 
-## 🧠 Key Idea
+1. Data collection
+   - Keyboard and mouse events are recorded with `pynput`.
+   - Each event includes timestamp, event type, key, and mouse position.
 
-Instead of passwords, the system analyzes **how the user behaves**:
+2. Windowing
+   - Raw events are split into 10-second windows.
+   - Long inactivity gaps start a new segment.
 
-* typing rhythm
-* mouse movement patterns
-* interaction timing
+3. Feature extraction
+   - Dwell time
+   - Flight time
+   - Typing speed
+   - Mouse speed
+   - Mouse acceleration
+   - Click count
+   - Pause statistics
 
----
+4. Model training
+   - One-Class SVM
+   - Isolation Forest
 
-## ⚙️ Pipeline
+5. Ensemble prediction
+   - A window is accepted only when both models classify it as normal.
 
-1. **Data Collection**
+## Setup
 
-   * Keyboard and mouse events recorded using `pynput`
-   * Each event includes timestamp, type, and position
-
-2. **Windowing**
-
-   * Data split into time windows (e.g., 10 seconds)
-   * Also split on inactivity gaps
-
-3. **Feature Extraction**
-
-   * Dwell time (key hold duration)
-   * Flight time (time between keys)
-   * Typing speed
-   * Mouse speed & acceleration
-   * Click frequency
-   * Pause behavior
-
-4. **Dataset Creation**
-
-   * Each window becomes a feature vector
-
-5. **Model Training**
-
-   * One-Class SVM (RBF kernel)
-   * Isolation Forest
-
-6. **Ensemble Decision**
-
-   * Combine model outputs for final prediction
-
----
-
-## 📊 Models Used
-
-### One-Class SVM
-
-* Learns boundary of normal behavior
-* Kernel: RBF
-
-### Isolation Forest
-
-* Detects anomalies based on isolation
-
----
-
-## 📈 Features Used
-
-* dwell_mean, dwell_std
-* flight_mean, flight_std
-* typing_speed
-* mouse_speed_mean, mouse_speed_std
-* mouse_acceleration
-* click_count
-* pause_mean, pause_max
-
----
-
-## 🚀 How to Run
-
-### 1. Install dependencies
+Install dependencies:
 
 ```bash
-pip install -r requirements.txt
+py -m pip install -r requirements.txt
 ```
 
-### 2. Collect data
+On systems where `python` is configured normally, this also works:
 
 ```bash
-python src/collector.py
+python -m pip install -r requirements.txt
 ```
 
-### 3. Build dataset
+## Usage
+
+Collect a new behavioral session:
 
 ```bash
-python src/dataset.py
+py src/collector.py
 ```
 
-### 4. Train models
+Train models from `data/data_record.csv`:
 
 ```bash
-python src/models.py
+py main.py
 ```
 
----
+Evaluate `data/test_session.csv` with the saved models:
 
-## 📂 Data
+```bash
+py test.py
+```
 
-⚠️ Raw behavioral data is not included for privacy reasons.
+## Expected CSV Format
 
----
+Input files must contain these columns:
 
-## 🎯 Results
+```text
+timestamp,event_type,key,x,y
+```
 
-* Demonstrates feasibility of behavioral authentication
-* Shows effectiveness of anomaly detection models
-* Ensemble improves robustness
+Supported event types include:
 
----
+```text
+key_press
+key_release
+mouse_move
+mouse_click
+mouse_scroll
+```
 
-## ⚠️ Limitations
+## Notes
 
-* User behavior varies over time
-* Not foolproof against imitation
-* Requires sufficient data collection
-
----
-
-## 🔮 Future Work
-
-* Add deep learning models (LSTM, Autoencoder)
-* Improve feature engineering (digraphs, rhythm)
-* Implement real-time authentication system
-
----
-
-## 👨‍💻 Author
-
-LILIA MOKHTARI
-
----
-
+Raw behavioral data can be sensitive. Keep collected sessions private and avoid committing personal datasets unless they are sanitized.
