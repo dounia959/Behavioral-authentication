@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behavioral Authentication System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">🔐 Behavioral Authentication</h1>
+                <p class="tagline">Continuous User Authentication via Keystroke & Mouse Dynamics</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Pipeline Overview -->
+            <section class="pipeline-section">
+                <h2>Authentication Pipeline</h2>
+                <div class="pipeline">
+                    <div class="pipeline-step">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Collect Data</div>
+                        <p>Record keyboard & mouse events</p>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Train Model</div>
+                        <p>Learn normal behavior</p>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Test Auth</div>
+                        <p>Detect anomalies</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Controls Section -->
+            <section class="controls-section">
+                <div class="row">
+                    <!-- Step 1: Data Collection -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Step 1: Data Collection</h3>
+                            <span class="step-icon">📊</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="info-text">Collect behavioral data from the user by running the data collection script in a terminal.</p>
+                            
+                            <div class="instruction-box">
+                                <h4>To collect data:</h4>
+                                <ol>
+                                    <li>Open a terminal/command prompt</li>
+                                    <li>Navigate to the project folder</li>
+                                    <li>Run: <code>python src/collector.py</code></li>
+                                    <li>Use your keyboard and mouse normally</li>
+                                    <li>Press ESC to stop recording</li>
+                                </ol>
+                            </div>
+
+                            <div class="upload-area" id="trainUploadArea">
+                                <input type="file" id="trainFileInput" accept=".csv" hidden>
+                                <div class="upload-content">
+                                    <span class="upload-icon">📁</span>
+                                    <p><strong>Upload Training Data</strong></p>
+                                    <p class="small-text">Drag & drop CSV file here or click to browse</p>
+                                    <p class="small-text">Required columns: timestamp, event_type, key, x, y</p>
+                                </div>
+                            </div>
+
+                            <div id="trainFileStatus" class="file-status hidden">
+                                <span id="trainFileName"></span>
+                                <span class="status-icon">✓</span>
+                            </div>
+
+                            <button class="btn btn-secondary" id="clearTrainBtn" style="display: none;">Clear Training Data</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Model Training -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Step 2: Train Model</h3>
+                            <span class="step-icon">🧠</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="info-text">Train anomaly detection models using One-Class SVM and Isolation Forest.</p>
+                            
+                            <div class="training-info">
+                                <div class="info-item">
+                                    <strong>Algorithm 1:</strong> One-Class SVM
+                                    <p class="small-text">Learns the boundary of normal behavior</p>
+                                </div>
+                                <div class="info-item">
+                                    <strong>Algorithm 2:</strong> Isolation Forest
+                                    <p class="small-text">Detects outliers/anomalies</p>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" id="trainBtn">🚀 Start Training</button>
+                            
+                            <div id="trainingStatus" class="status-box hidden">
+                                <div class="spinner"></div>
+                                <p>Training in progress...</p>
+                            </div>
+
+                            <div id="trainingLogs" class="logs-box hidden">
+                                <div class="logs-header">Training Logs</div>
+                                <div class="logs-content" id="logsContent"></div>
+                            </div>
+
+                            <div id="trainingSuccess" class="success-box hidden">
+                                <span class="success-icon">✓</span>
+                                <p>Models trained successfully!</p>
+                            </div>
+
+                            <div id="trainingError" class="error-box hidden">
+                                <span class="error-icon">✗</span>
+                                <p id="errorMessage"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Step 3: Authentication Testing -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Step 3: Test Authentication</h3>
+                            <span class="step-icon">🔍</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="info-text">Upload a test session to verify if the user is legitimate or an impostor.</p>
+                            
+                            <div class="upload-area" id="testUploadArea">
+                                <input type="file" id="testFileInput" accept=".csv" hidden>
+                                <div class="upload-content">
+                                    <span class="upload-icon">📁</span>
+                                    <p><strong>Upload Test Data</strong></p>
+                                    <p class="small-text">Drag & drop CSV file here or click to browse</p>
+                                </div>
+                            </div>
+
+                            <div id="testFileStatus" class="file-status hidden">
+                                <span id="testFileName"></span>
+                                <span class="status-icon">✓</span>
+                            </div>
+
+                            <button class="btn btn-primary" id="testBtn">🔐 Run Authentication Test</button>
+                            <button class="btn btn-secondary" id="clearTestBtn" style="display: none;">Clear Test Data</button>
+                        </div>
+                    </div>
+
+                    <!-- Results Display -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Authentication Result</h3>
+                            <span class="step-icon">📈</span>
+                        </div>
+                        <div class="card-body">
+                            <div id="noResult" class="no-result">
+                                <p>No test results yet. Run a test to see the verdict.</p>
+                            </div>
+
+                            <div id="resultContainer" class="result-container hidden">
+                                <div id="verdictBox" class="verdict-box">
+                                    <div class="verdict-label">Verdict</div>
+                                    <div id="verdictText" class="verdict-text"></div>
+                                    <div id="confidenceBar" class="confidence-bar">
+                                        <div id="confidenceLevel" class="confidence-level"></div>
+                                    </div>
+                                    <div id="confidenceText" class="confidence-text"></div>
+                                </div>
+
+                                <div class="result-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-label">Total Windows Analyzed</span>
+                                        <span class="stat-value" id="totalWindows">-</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Legitimate Windows</span>
+                                        <span class="stat-value legitimate" id="legitWindows">-</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Anomaly Windows</span>
+                                        <span class="stat-value anomaly" id="anomalyWindows">-</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Detection Threshold</span>
+                                        <span class="stat-value" id="threshold">-</span>
+                                    </div>
+                                </div>
+
+                                <div class="result-timestamp">
+                                    Test completed at: <span id="resultTime"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Controls -->
+            <section class="system-section">
+                <div class="system-controls">
+                    <button class="btn btn-secondary" id="resetBtn">🔄 Reset System</button>
+                    <div class="status-indicator">
+                        <span class="indicator-label">System Status:</span>
+                        <span id="systemStatus" class="indicator-dot idle"></span>
+                        <span id="statusText">Ready</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Info Section -->
+            <section class="info-section">
+                <div class="info-box">
+                    <h3>How It Works</h3>
+                    <p>
+                        This system uses behavioral biometrics to continuously authenticate users. It learns unique patterns in:
+                        <strong>keystroke timing</strong> (dwell time, flight time), 
+                        <strong>typing speed</strong>, 
+                        <strong>mouse movement</strong> (speed, acceleration), and 
+                        <strong>clicking patterns</strong>.
+                    </p>
+                    <p>
+                        An ensemble of two anomaly detection models (SVM + Isolation Forest) flags sessions that deviate 
+                        significantly from the learned pattern. Both models must agree for a window to be classified as legitimate.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Behavioral Authentication System | Built with Flask & Machine Learning</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
