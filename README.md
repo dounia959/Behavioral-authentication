@@ -24,23 +24,8 @@ The system includes:
 
 # 🎥 Demo Video
 
-> Add your demo video link here
+> https://youtu.be/2jaQqqaOu7U
 
-```txt
-[ Demo Video Link ]
-```
-
----
-
-# 📄 Project Report
-
-> Add your project report PDF link here
-
-```txt
-[ Project Report PDF Link ]
-```
-
----
 
 #  Features
 
@@ -491,3 +476,4 @@ Possible future extensions:
 
 
 ```
+
