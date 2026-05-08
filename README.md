@@ -492,4 +492,3 @@ Possible future extensions:
 
 ```
 
-Using behavioral biometrics and machine learning for continuous identity verification.
