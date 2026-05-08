@@ -4,36 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Behavioral Authentication System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+
+    <!-- Animated background grid -->
+    <div class="bg-grid"></div>
+    <div class="bg-scanline"></div>
+
+    <!-- Floating particles -->
+    <div class="particles">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
     <div class="container">
         <!-- Header -->
         <header class="header">
+            <div class="header-glow"></div>
             <div class="header-content">
-                <h1 class="logo"> Behavioral Authentication</h1>
-                <p class="tagline">Continuous User Authentication via Keystroke & Mouse Dynamics</p>
+                <div class="logo-wrap">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="30,4 54,17 54,43 30,56 6,43 6,17" stroke="currentColor" stroke-width="2" fill="none" opacity="0.4"/>
+                            <polygon points="30,12 47,21.5 47,38.5 30,48 13,38.5 13,21.5" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.7"/>
+                            <circle cx="30" cy="30" r="8" fill="currentColor" opacity="0.9"/>
+                            <line x1="30" y1="22" x2="30" y2="4" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                            <line x1="30" y1="38" x2="30" y2="56" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                        </svg>
+                    </div>
+                    <h1 class="logo">BEHAVIORAL AUTH<span class="logo-accent">ENTICATION</span></h1>
+                </div>
+                <p class="tagline">Continuous User Authentication via Keystroke &amp; Mouse Dynamics</p>
+                <div class="header-badges">
+                    <span class="badge">SVM</span>
+                    <span class="badge">Isolation Forest</span>
+                    <span class="badge">Real-time Detection</span>
+                </div>
             </div>
         </header>
 
         <!-- Main Content -->
         <main class="main-content">
+
             <!-- Pipeline Overview -->
             <section class="pipeline-section">
-                <h2>Authentication Pipeline</h2>
+                <h2><span class="section-num">00</span> Authentication Pipeline</h2>
                 <div class="pipeline">
                     <div class="pipeline-step">
                         <div class="step-number">1</div>
                         <div class="step-label">Collect Data</div>
-                        <p>Record keyboard & mouse events</p>
+                        <p>Record keyboard &amp; mouse events</p>
                     </div>
-                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-arrow">
+                        <svg viewBox="0 0 60 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="10" x2="50" y2="10" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"/>
+                            <polygon points="50,5 60,10 50,15" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="pipeline-step">
                         <div class="step-number">2</div>
                         <div class="step-label">Train Model</div>
                         <p>Learn normal behavior</p>
                     </div>
-                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-arrow">
+                        <svg viewBox="0 0 60 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="10" x2="50" y2="10" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"/>
+                            <polygon points="50,5 60,10 50,15" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="pipeline-step">
                         <div class="step-number">3</div>
                         <div class="step-label">Test Auth</div>
@@ -49,7 +91,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3>Step 1: Data Collection</h3>
-                            <span class="step-icon"></span>
+                            <span class="step-icon">📊</span>
                         </div>
                         <div class="card-body">
                             <p class="info-text">Collect behavioral data from the user by running the data collection script in a terminal.</p>
@@ -70,7 +112,7 @@
                                 <div class="upload-content">
                                     <span class="upload-icon">📁</span>
                                     <p><strong>Upload Training Data</strong></p>
-                                    <p class="small-text">Drag & drop CSV file here or click to browse</p>
+                                    <p class="small-text">Drag &amp; drop CSV file here or click to browse</p>
                                     <p class="small-text">Required columns: timestamp, event_type, key, x, y</p>
                                 </div>
                             </div>
@@ -88,7 +130,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3>Step 2: Train Model</h3>
-                            <span class="step-icon"></span>
+                            <span class="step-icon">🧠</span>
                         </div>
                         <div class="card-body">
                             <p class="info-text">Train anomaly detection models using One-Class SVM and Isolation Forest.</p>
@@ -104,7 +146,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn btn-primary" id="trainBtn">Start Training</button>
+                            <button class="btn btn-primary" id="trainBtn">🚀 Start Training</button>
                             
                             <div id="trainingStatus" class="status-box hidden">
                                 <div class="spinner"></div>
@@ -134,7 +176,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3>Step 3: Test Authentication</h3>
-                            <span class="step-icon"></span>
+                            <span class="step-icon">🔍</span>
                         </div>
                         <div class="card-body">
                             <p class="info-text">Upload a test session to verify if the user is legitimate or an impostor.</p>
@@ -144,7 +186,7 @@
                                 <div class="upload-content">
                                     <span class="upload-icon">📁</span>
                                     <p><strong>Upload Test Data</strong></p>
-                                    <p class="small-text">Drag & drop CSV file here or click to browse</p>
+                                    <p class="small-text">Drag &amp; drop CSV file here or click to browse</p>
                                 </div>
                             </div>
 
@@ -153,7 +195,7 @@
                                 <span class="status-icon">✓</span>
                             </div>
 
-                            <button class="btn btn-primary" id="testBtn"> Run Authentication Test</button>
+                            <button class="btn btn-primary" id="testBtn">🔐 Run Authentication Test</button>
                             <button class="btn btn-secondary" id="clearTestBtn" style="display: none;">Clear Test Data</button>
                         </div>
                     </div>
@@ -162,7 +204,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3>Authentication Result</h3>
-                            <span class="step-icon"></span>
+                            <span class="step-icon">📈</span>
                         </div>
                         <div class="card-body">
                             <div id="noResult" class="no-result">
@@ -240,7 +282,7 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p>&copy; 2024 Behavioral Authentication System | Built with Flask & Machine Learning</p>
+            <p>&copy; 2024 Behavioral Authentication System | Built with Flask &amp; Machine Learning</p>
         </footer>
     </div>
 
